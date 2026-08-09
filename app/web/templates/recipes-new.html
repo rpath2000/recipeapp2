@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add / Edit Recipe</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
+            text-decoration: none;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .header {
+            background: white;
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .icon-container {
+            background-color: #e8f5e9;
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .header-text h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .header-text p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 8px;
+            padding: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #d32f2f;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #4caf50;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            padding-right: 40px;
+        }
+
+        .tip {
+            background-color: #f5f5f5;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #666;
+            margin-top: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .tip::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .tip.ingredient::before {
+            content: '🌿';
+        }
+
+        .tip.instruction::before {
+            content: '💡';
+        }
+
+        .additional-info {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid #eee;
+        }
+
+        .additional-info h3 {
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .time-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .time-field {
+            position: relative;
+        }
+
+        .time-field input {
+            padding-left: 40px;
+        }
+
+        .time-field::before {
+            content: '🕐';
+            position: absolute;
+            left: 12px;
+            top: 36px;
+            font-size: 18px;
+        }
+
+        .optional {
+            color: #999;
+            font-weight: 400;
+            font-size: 13px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+        }
+
+        .button-group-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel {
+            background: white;
+            border-color: #ddd;
+            color: #333;
+        }
+
+        .btn-cancel:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-draft {
+            background: white;
+            border-color: #ddd;
+            color: #333;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-draft:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-draft::before {
+            content: '🔖';
+        }
+
+        .btn-save {
+            background: #2e7d32;
+            border-color: #2e7d32;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-save:hover {
+            background: #1b5e20;
+        }
+
+        .btn-save::before {
+            content: '✓';
+        }
+
+        .required-note {
+            color: #d32f2f;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .time-fields {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .button-group-right {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+  {% include "_shared_styles.html" %}
+</head>
+<body>
+    <div class="container">
+        <a href="/recipes" class="back-link">
+            <span>←</span>
+            <span>Back to Recipes</span>
+        </a>
+
+        <div class="header">
+            <div class="icon-container">👨‍🍳</div>
+            <div class="header-text">
+                <h1>Add / Edit Recipe</h1>
+                <p>Fill in the details below to create or update your recipe.</p>
+            </div>
+        </div>
+
+        <form class="form-container">
+            <div class="form-group">
+                <label for="recipe-name">Recipe Name <span class="required">*</span></label>
+                <input type="text" id="recipe-name" name="recipe-name" placeholder="e.g., Classic Spaghetti Bolognese" value="{{ recipe.name if recipe else '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Add a short description of your recipe...">{{ recipe.description if recipe else '' }}</textarea>
+                <div class="char-count">{{ recipe.description|length if recipe and recipe.description else 0 }} / 250</div>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category <span class="required">*</span></label>
+                <select id="category" name="category" required>
+                    <option value="">Select a category</option>
+                    <option value="appetizer" {% if recipe and recipe.category == "appetizer" %}selected{% endif %}>Appetizer</option>
+                    <option value="main-course" {% if recipe and recipe.category == "main-course" %}selected{% endif %}>Main Course</option>
+                    <option value="dessert" {% if recipe and recipe.category == "dessert" %}selected{% endif %}>Dessert</option>
+                    <option value="beverage" {% if recipe and recipe.category == "beverage" %}selected{% endif %}>Beverage</option>
+                    <option value="snack" {% if recipe and recipe.category == "snack" %}selected{% endif %}>Snack</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ingredients">Ingredients (one per line) <span class="required">*</span></label>
+                <textarea id="ingredients" name="ingredients" placeholder="Enter each ingredient on a new line..." style="min-height: 150px;" required>{% if recipe and recipe.ingredients %}{% for ingredient in recipe.ingredients %}{{ ingredient }}
+{% endfor %}{% endif %}</textarea>
+                <div class="tip ingredient">
+                    <span>Tip: Add quantities and notes (e.g., 1 cup flour, sifted)</span>
+                </div>
+                <div class="char-count">0 / 1000</div>
+            </div>
+
+            <div class="form-group">
+                <label for="instructions">Instructions <span class="required">*</span></label>
+                <textarea id="instructions" name="instructions" placeholder="Enter step-by-step instructions..." style="min-height: 150px;" required>{{ recipe.instructions if recipe else '' }}</textarea>
+                <div class="tip instruction">
+                    <span>Tip: Number your steps for clarity.</span>
+                </div>
+                <div class="char-count">0 / 3000</div>
+            </div>
+
+            <div class="additional-info">
+                <h3>Additional Information</h3>
+                
+                <div class="time-fields">
+                    <div class="time-field">
+                        <label for="prep-time">Prep Time <span class="optional">(optional)</span></label>
+                        <input type="text" id="prep-time" name="prep-time" placeholder="e.g., 20 mins" value="{{ recipe.prep_time if recipe else '' }}">
+                    </div>
+                    <div class="time-field">
+                        <label for="cook-time">Cook Time <span class="optional">(optional)</span></label>
+                        <input type="text" id="cook-time" name="cook-time" placeholder="e.g., 45 mins" value="{{ recipe.cook_time if recipe else '' }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Notes <span class="optional">(optional)</span></label>
+                    <textarea id="notes" name="notes" placeholder="Any additional notes about this recipe...">{{ recipe.notes if recipe else '' }}</textarea>
+                    <div class="char-count">{{ recipe.notes|length if recipe and recipe.notes else 0 }} / 500</div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <div>
+                    <p class="required-note">* Required fields</p>
+                </div>
+                <div class="button-group-right">
+                    <button type="button" class="btn-cancel">Cancel</button>
+                    <button type="button" class="btn-draft">Save as Draft</button>
+                    <button type="submit" class="btn-save">Save Recipe</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
