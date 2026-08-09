@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Keeper - My Recipes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background-color: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: #d4e7d4;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .logo-text h1 {
+            font-size: 20px;
+            color: #1a4d2e;
+            font-weight: 600;
+        }
+        .logo-text p {
+            font-size: 13px;
+            color: #666;
+        }
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background-color: #2d5f3f;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .user-name {
+            font-size: 14px;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            min-height: calc(100vh - 73px);
+        }
+        .sidebar {
+            width: 240px;
+            background-color: white;
+            border-right: 1px solid #e0e0e0;
+            padding: 24px 0;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: #333;
+            text-decoration: none;
+            font-size: 15px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+        .nav-item:hover {
+            background-color: #f5f5f5;
+        }
+        .nav-item.active {
+            background-color: #e8f5e9;
+            border-left-color: #2d5f3f;
+            color: #1a4d2e;
+        }
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+        }
+        .nav-divider {
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 16px 0;
+        }
+        .logout-item {
+            margin-top: auto;
+        }
+        .main-content {
+            flex: 1;
+            padding: 32px;
+        }
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+        .page-title h2 {
+            font-size: 32px;
+            color: #1a4d2e;
+            margin-bottom: 8px;
+        }
+        .page-title p {
+            font-size: 14px;
+            color: #666;
+        }
+        .add-button {
+            background-color: #2d5f3f;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .add-button:hover {
+            background-color: #1a4d2e;
+        }
+        .controls-bar {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px 10px 10px 40px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .filter-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        .filter-select {
+            padding: 10px 32px 10px 12px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: white;
+            min-width: 180px;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23666" d="M6 9L1 4h10z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            cursor: pointer;
+        }
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+        }
+        .view-button {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #d0d0d0;
+            background-color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .view-button.active {
+            background-color: #2d5f3f;
+            border-color: #2d5f3f;
+            color: white;
+        }
+        .recipes-table {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 140px;
+            gap: 16px;
+            padding: 16px 20px;
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .recipe-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 140px;
+            gap: 16px;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            align-items: center;
+        }
+        .recipe-row:last-child {
+            border-bottom: none;
+        }
+        .recipe-info {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        .recipe-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .recipe-details h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .recipe-details p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+        }
+        .category-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .category-dinner {
+            background-color: #e8f5e9;
+            color: #2d5f3f;
+        }
+        .category-breakfast {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+        .category-lunch {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+        .category-soup {
+            background-color: #ede7f6;
+            color: #5e35b1;
+        }
+        .category-dessert {
+            background-color: #fce4ec;
+            color: #c2185b;
+        }
+        .date-cell {
+            font-size: 14px;
+            color: #333;
+        }
+        .date-time {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+        .action-button {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #d0d0d0;
+            background-color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+        .action-button:hover {
+            background-color: #f5f5f5;
+        }
+        .action-button.delete:hover {
+            background-color: #ffebee;
+            border-color: #ef5350;
+            color: #ef5350;
+        }
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+        .pagination-info {
+            font-size: 14px;
+            color: #666;
+        }
+        .pagination-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .page-button {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #d0d0d0;
+            background-color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #333;
+        }
+        .page-button:hover {
+            background-color: #f5f5f5;
+        }
+        .page-button.active {
+            background-color: #2d5f3f;
+            border-color: #2d5f3f;
+            color: white;
+        }
+        .page-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+    </style>
+  {% include "_shared_styles.html" %}
+</head>
+<body>
+    <div class="header">
+        <div class="logo-section">
+            <div class="logo">👨‍🍳</div>
+            <div class="logo-text">
+                <h1>Recipe Keeper</h1>
+                <p>Your favorite recipes, organized.</p>
+            </div>
+        </div>
+        <div class="user-menu">
+            <div class="user-avatar">AD</div>
+            <span class="user-name">Alex Davis</span>
+            <span>▼</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <a href="/dashboard" class="nav-item">
+                    <span class="nav-icon">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/recipes" class="nav-item active">
+                    <span class="nav-icon">📋</span>
+                    <span>Recipes</span>
+                </a>
+                <a href="/favorites" class="nav-item">
+                    <span class="nav-icon">❤️</span>
+                    <span>Favorites</span>
+                </a>
+                <a href="/categories" class="nav-item">
+                    <span class="nav-icon">🏷️</span>
+                    <span>Categories</span>
+                </a>
+                <a href="/tags" class="nav-item">
+                    <span class="nav-icon">🏷️</span>
+                    <span>Tags</span>
+                </a>
+                <div class="nav-divider"></div>
+                <a href="/settings" class="nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a>
+                <a href="/profile" class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Profile</span>
+                </a>
+                <div class="nav-divider"></div>
+                <a href="/logout" class="nav-item logout-item">
+                    <span class="nav-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h2>My Recipes</h2>
+                    <p>View, search, and manage your recipe collection.</p>
+                </div>
+                <button class="add-button">
+                    <span>+</span>
+                    <span>Add New Recipe</span>
+                </button>
+            </div>
+
+            <div class="controls-bar">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search recipes by name or ingredient...">
+                </div>
+                <div class="filter-group">
+                    <select class="filter-select">
+                        <option>All Categories</option>
+                        <option>Dinner</option>
+                        <option>Breakfast</option>
+                        <option>Lunch</option>
+                        <option>Soup</option>
+                        <option>Dessert</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Sort by</label>
+                    <select class="filter-select">
+                        <option>Recently Updated</option>
+                        <option>Recently Created</option>
+                        <option>Name (A-Z)</option>
+                        <option>Name (Z-A)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">View</label>
+                    <div class="view-toggle">
+                        <button class="view-button active">☰</button>
+                        <button class="view-button">⊞</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipes-table">
+                <div class="table-header">
+                    <div>Recipe</div>
+                    <div>Category</div>
+                    <div>Updated</div>
+                    <div>Created</div>
+                    <div>Actions</div>
+                </div>
+
+                <div class="recipe-row">
+                    <div class="recipe-info">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23f0e5d8' width='80' height='80'/%3E%3C/svg%3E" alt="Classic Spaghetti Bolognese" class="recipe-image">
+                        <div class="recipe-details">
+                            <h3>Classic Spaghetti Bolognese</h3>
+                            <p>A rich and hearty Italian favorite with ground beef and tomato sauce.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="category-badge category-dinner">Dinner</span>
+                    </div>
+                    <div class="date-cell">
+                        May 20, 2024
+                        <div class="date-time">10:30 AM</div>
+                    </div>
+                    <div class="date-cell">
+                        May 10, 2024
+                        <div class="date-time">9:15 AM</div>
+                    </div>
+                    <div class="actions">
+                        <button class="action-button" title="View">👁️</button>
+                        <button class="action-button" title="Edit">✏️</button>
+                        <button class="action-button delete" title="Delete">🗑️</button>
+                    </div>
+                </div>
+
+                <div class="recipe-row">
+                    <div class="recipe-info">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23f4dda8' width='80' height='80'/%3E%3C/svg%3E" alt="Fluffy Pancakes" class="recipe-image">
+                        <div class="recipe-details">
+                            <h3>Fluffy Pancakes</h3>
+                            <p>Light and fluffy pancakes perfect for a weekend breakfast.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="category-badge category-breakfast">Breakfast</span>
+                    </div>
+                    <div class="date-cell">
+                        May 18, 2024
+                        <div class="date-time">8:45 AM</div>
+                    </div>
+                    <div class="date-cell">
+                        May 12, 2024
+                        <div class="date-time">7:40 AM</div>
+                    </div>
+                    <div class="actions">
+                        <button class="action-button" title="View">👁️</button>
+                        <button class="action-button" title="Edit">✏️</button>
+                        <button class="action-button delete" title="Delete">🗑️</button>
+                    </div>
+                </div>
+
+                <div class="recipe-row">
+                    <div class="recipe-info">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23e8c9a8' width='80' height='80'/%3E%3C/svg%3E" alt="Chicken Stir Fry" class="recipe-image">
+                        <div class="recipe-details">
+                            <h3>Chicken Stir Fry</h3>
+                            <p>Quick and healthy stir fry with chicken and colorful veggies.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="category-badge category-lunch">Lunch</span>
+                    </div>
+                    <div class="date-cell">
+                        May 17, 2024
+                        <div class="date-time">6:20 PM</div>
+                    </div>
+                    <div class="date-cell">
+                        May 15, 2024
+                        <div class="date-time">11:05 AM</div>
+                    </div>
+                    <div class="actions">
+                        <button class="action-button" title="View">👁️</button>
+                        <button class="action-button" title="Edit">✏️</button>
+                        <button class="action-button delete" title="Delete">🗑️</button>
+                    </div>
+                </div>
+
+                <div class="recipe-row">
+                    <div class="recipe-info">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23e89a5a' width='80' height='80'/%3E%3C/svg%3E" alt="Creamy Tomato Soup" class="recipe-image">
+                        <div class="recipe-details">
+                            <h3>Creamy Tomato Soup</h3>
+                            <p>Warm, comforting soup made with ripe tomatoes and cream.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="category-badge category-soup">Soup</span>
+                    </div>
+                    <div class="date-cell">
+                        May 15, 2024
+                        <div class="date-time">4:10 PM</div>
+                    </div>
+                    <div class="date-cell">
+                        May 8, 2024
+                        <div class="date-time">3:30 PM</div>
+                    </div>
+                    <div class="actions">
+                        <button class="action-button" title="View">👁️</button>
+                        <button class="action-button" title="Edit">✏️</button>
+                        <button class="action-button delete" title="Delete">🗑️</button>
+                    </div>
+                </div>
+
+                <div class="recipe-row">
+                    <div class="recipe-info">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23c9a66b' width='80' height='80'/%3E%3C/svg%3E" alt="Chocolate Chip Cookies" class="recipe-image">
+                        <div class="recipe-details">
+                            <h3>Chocolate Chip Cookies</h3>
+                            <p>Crispy edges, soft center, and loaded with chocolate chips.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="category-badge category-dessert">Dessert</span>
+                    </div>
+                    <div class="date-cell">
+                        May 14, 2024
+                        <div class="date-time">2:50 PM</div>
+                    </div>
+                    <div class="date-cell">
+                        May 5, 2024
+                        <div class="date-time">10:20 AM</div>
+                    </div>
+                    <div class="actions">
+                        <button class="action-button" title="View">👁️</button>
+                        <button class="action-button" title="Edit">✏️</button>
+                        <button class="action-button delete" title="Delete">🗑️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <div class="pagination-info">Showing 1 to 5 of 25 recipes</div>
+                <div class="pagination-controls">
+                    <button class="page-button" disabled>‹</button>
+                    <button class="page-button active">1</button>
+                    <button class="page-button">2</button>
+                    <button class="page-button">3</button>
+                    <button class="page-button">...</button>
+                    <button class="page-button">5</button>
+                    <button class="page-button">›</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

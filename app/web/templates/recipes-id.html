@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ recipe.title }} - Recipes World</title>
+  <style>
+    :root {
+      --un-background-01: #faf8f5;
+      --un-background-02: #ffffff;
+      --un-background-inverse: #2c3e50;
+      --un-text-default: #2c3e50;
+      --un-text-muted: #6c757d;
+      --un-text-inverse: #ffffff;
+      --un-primary-default: #8ba888;
+      --un-primary-hover: #748f71;
+      --un-primary-pressed: #5d7a5a;
+      --un-brand-500: #8ba888;
+      --un-border-color-container: #e0ddd8;
+      --un-border-color-input: #ced4da;
+      --un-border-color-separator: #e9ecef;
+      --un-focus-color: #8ba888;
+      --un-focus-width: 2px;
+      --un-focus-offset: 2px;
+      --un-error-default: #dc3545;
+      --un-success-default: #28a745;
+      --un-warning-default: #ffc107;
+      --un-info-default: #17a2b8;
+      --un-font-family-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --un-font-family-mono: 'Courier New', monospace;
+      --un-font-weight-primary-regular: 400;
+      --un-font-weight-primary-bold: 600;
+      --un-font-weight-primary-light: 300;
+      --un-typography-title-h1-font-size: 2rem;
+      --un-typography-title-h2-font-size: 1.5rem;
+      --un-typography-title-h3-font-size: 1.25rem;
+      --un-typography-body-font-size: 1rem;
+      --un-typography-caption-font-size: 0.875rem;
+      --un-radius-small: 4px;
+      --un-radius-medium: 8px;
+      --un-radius-large: 12px;
+      --un-space-card-body-horizontal: 1.5rem;
+      --un-space-textinput-horizontal: 0.75rem;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--un-font-family-primary);
+      font-size: var(--un-typography-body-font-size);
+      font-weight: var(--un-font-weight-primary-regular);
+      color: var(--un-text-default);
+      background-color: var(--un-background-01);
+    }
+
+    .unity-theme {
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .recipe-detail-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--un-primary-default);
+      text-decoration: none;
+      font-size: var(--un-typography-body-font-size);
+      margin-bottom: 1.5rem;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--un-primary-hover);
+    }
+
+    .back-link:focus {
+      outline: var(--un-focus-width) solid var(--un-focus-color);
+      outline-offset: var(--un-focus-offset);
+      border-radius: var(--un-radius-small);
+    }
+
+    .recipe-header {
+      background-color: var(--un-background-02);
+      border-radius: var(--un-radius-large);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .recipe-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: var(--un-typography-title-h1-font-size);
+      font-weight: var(--un-font-weight-primary-bold);
+      color: var(--un-text-default);
+      margin: 0;
+    }
+
+    .recipe-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--un-radius-medium);
+      border: 1px solid var(--un-border-color-input);
+      background-color: var(--un-background-02);
+      color: var(--un-text-default);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    .icon-btn:hover {
+      background-color: #f8f9fa;
+      border-color: var(--un-text-muted);
+    }
+
+    .icon-btn:focus {
+      outline: none;
+      box-shadow: 0 0 0 var(--un-focus-width) rgba(139, 168, 136, 0.4);
+    }
+
+    .recipe-meta {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .category-badge {
+      display: inline-block;
+      padding: 0.375rem 0.875rem;
+      background-color: #fff9e6;
+      color: #8b7500;
+      border-radius: 20px;
+      font-size: var(--un-typography-caption-font-size);
+      font-weight: var(--un-font-weight-primary-bold);
+    }
+
+    .recipe-stat {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: var(--un-typography-caption-font-size);
+      color: var(--un-text-muted);
+    }
+
+    .recipe-description {
+      color: var(--un-text-default);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .recipe-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .un-card {
+      background-color: var(--un-background-02);
+      border-radius: var(--un-radius-large);
+      padding: var(--un-space-card-body-horizontal);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .recipe-image-section {
+      grid-column: 1 / -1;
+    }
+
+    .recipe-image {
+      width: 100%;
+      height: 400px;
+      background-color: #f0f0f0;
+      border-radius: var(--un-radius-medium);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--un-text-muted);
+      font-size: var(--un-typography-caption-font-size);
+      overflow: hidden;
+    }
+
+    h2 {
+      font-size: var(--un-typography-title-h2-font-size);
+      font-weight: var(--un-font-weight-primary-bold);
+      color: var(--un-text-default);
+      margin: 0 0 1rem 0;
+    }
+
+    .ingredients-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .ingredients-list li {
+      padding: 0.625rem 0;
+      border-bottom: 1px solid var(--un-border-color-separator);
+      color: var(--un-text-default);
+    }
+
+    .ingredients-list li:last-child {
+      border-bottom: none;
+    }
+
+    .ingredients-list li::before {
+      content: '•';
+      color: var(--un-primary-default);
+      font-weight: var(--un-font-weight-primary-bold);
+      display: inline-block;
+      width: 1.5rem;
+    }
+
+    .instructions-list {
+      list-style: none;
+      counter-reset: step-counter;
+      padding: 0;
+      margin: 0;
+    }
+
+    .instructions-list li {
+      counter-increment: step-counter;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--un-border-color-separator);
+      position: relative;
+      padding-left: 3rem;
+      line-height: 1.6;
+    }
+
+    .instructions-list li:last-child {
+      border-bottom: none;
+    }
+
+    .instructions-list li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 1rem;
+      width: 2rem;
+      height: 2rem;
+      background-color: var(--un-primary-default);
+      color: var(--un-text-inverse);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--un-font-weight-primary-bold);
+      font-size: var(--un-typography-caption-font-size);
+    }
+
+    @media (max-width: 768px) {
+      .recipe-content {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  {% include "_shared_styles.html" %}
+</head>
+<body>
+  <div class="unity-theme" data-mode="light" data-density="balanced">
+    <div class="recipe-detail-container">
+      <a href="/recipes" class="back-link">
+        <span>←</span>
+        <span>Back to Recipes</span>
+      </a>
+
+      <div class="recipe-header">
+        <div class="recipe-title-row">
+          <h1>{{ recipe.title }}</h1>
+          <div class="recipe-actions">
+            <button class="icon-btn" title="Edit recipe" aria-label="Edit recipe">✏️</button>
+            <button class="icon-btn" title="Delete recipe" aria-label="Delete recipe">🗑️</button>
+          </div>
+        </div>
+
+        <div class="recipe-meta">
+          <span class="category-badge">{{ recipe.category }}</span>
+          <span class="recipe-stat">
+            <span>⏱️</span>
+            <span>{{ recipe.duration }}</span>
+          </span>
+          <span class="recipe-stat">
+            <span>👤</span>
+            <span>by {{ recipe.author }}</span>
+          </span>
+          <span class="recipe-stat">
+            <span>📅</span>
+            <span>Added {{ recipe.added_time_ago }}</span>
+          </span>
+        </div>
+
+        <p class="recipe-description">
+          {{ recipe.description }}
+        </p>
+      </div>
+
+      <div class="recipe-content">
+        <section class="un-card recipe-image-section">
+          <div class="recipe-image">
+            [Recipe Image: {{ recipe.title }} - 1200x800px]
+          </div>
+        </section>
+
+        <section class="un-card">
+          <h2>Ingredients</h2>
+          <ul class="ingredients-list">
+            {% for ingredient in recipe.ingredients %}
+            <li>{{ ingredient }}</li>
+            {% endfor %}
+          </ul>
+        </section>
+
+        <section class="un-card">
+          <h2>Instructions</h2>
+          <ol class="instructions-list">
+            {% for step in recipe.instructions %}
+            <li>{{ step }}</li>
+            {% endfor %}
+          </ol>
+        </section>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

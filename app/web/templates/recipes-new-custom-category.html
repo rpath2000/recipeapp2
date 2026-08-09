@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add New Recipe - Custom Category</title>
+<style>
+:root {
+  --un-background-01: #faf9f7;
+  --un-background-02: #ffffff;
+  --un-background-inverse: #1a1a1a;
+  --un-text-default: #2d2d2d;
+  --un-text-muted: #6b6b6b;
+  --un-text-inverse: #ffffff;
+  --un-primary-default: #7b9a7e;
+  --un-primary-hover: #6a8a6d;
+  --un-primary-pressed: #5a7a5d;
+  --un-brand-500: #7b9a7e;
+  --un-brand-600: #6a8a6d;
+  --un-brand-700: #5a7a5d;
+  --un-error-default: #d32f2f;
+  --un-success-default: #388e3c;
+  --un-warning-default: #f57c00;
+  --un-info-default: #1976d2;
+  --un-border-color-container: #e0e0e0;
+  --un-border-color-input: #c4c4c4;
+  --un-border-color-separator: #eeeeee;
+  --un-focus-color: #7b9a7e;
+  --un-focus-width: 2px;
+  --un-focus-offset: 2px;
+  --un-font-family-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --un-font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+  --un-font-weight-primary-regular: 400;
+  --un-font-weight-primary-bold: 600;
+  --un-font-weight-primary-light: 300;
+  --un-typography-title-h1-font-size: 2rem;
+  --un-typography-title-h2-font-size: 1.5rem;
+  --un-typography-title-h3-font-size: 1.25rem;
+  --un-typography-body-font-size: 1rem;
+  --un-typography-caption-font-size: 0.875rem;
+  --un-radius-small: 4px;
+  --un-radius-medium: 8px;
+  --un-radius-large: 12px;
+  --un-radius-full: 9999px;
+  --un-grid-space-gutter-default: 24px;
+  --un-space-card-body-horizontal: 24px;
+  --un-space-textinput-horizontal: 12px;
+}
+
+.unity-theme {
+  font-family: var(--un-font-family-primary);
+  font-size: var(--un-typography-body-font-size);
+  color: var(--un-text-default);
+  line-height: 1.5;
+  background-color: var(--un-background-01);
+}
+
+.unity-theme * {
+  box-sizing: border-box;
+}
+
+button {
+  font-family: var(--un-font-family-primary);
+  font-size: var(--un-typography-body-font-size);
+  font-weight: var(--un-font-weight-primary-bold);
+  padding: 12px 24px;
+  border-radius: var(--un-radius-medium);
+  border: none;
+  background-color: var(--un-primary-default);
+  color: var(--un-text-inverse);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+button:hover {
+  background-color: var(--un-primary-hover);
+}
+
+button:active {
+  background-color: var(--un-primary-pressed);
+}
+
+button:focus-visible {
+  outline: var(--un-focus-width) solid var(--un-focus-color);
+  outline-offset: var(--un-focus-offset);
+}
+
+button.un-btn--secondary {
+  background-color: transparent;
+  color: var(--un-text-default);
+  border: 1px solid var(--un-border-color-input);
+}
+
+button.un-btn--secondary:hover {
+  background-color: var(--un-background-02);
+  border-color: var(--un-primary-default);
+}
+
+input, select, textarea {
+  font-family: var(--un-font-family-primary);
+  font-size: var(--un-typography-body-font-size);
+  padding: 12px var(--un-space-textinput-horizontal);
+  border: 1px solid var(--un-border-color-input);
+  border-radius: var(--un-radius-medium);
+  background-color: var(--un-background-02);
+  color: var(--un-text-default);
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--un-focus-color);
+  box-shadow: 0 0 0 var(--un-focus-width) rgba(123, 154, 126, 0.2);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--un-text-muted);
+}
+
+label {
+  display: block;
+  font-weight: var(--un-font-weight-primary-bold);
+  margin-bottom: 8px;
+  color: var(--un-text-default);
+}
+
+.un-card {
+  background-color: var(--un-background-02);
+  border-radius: var(--un-radius-large);
+  padding: var(--un-space-card-body-horizontal);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.form-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.form-header {
+  margin-bottom: 32px;
+}
+
+.form-header h1 {
+  font-size: var(--un-typography-title-h1-font-size);
+  font-weight: var(--un-font-weight-primary-bold);
+  margin: 0 0 8px 0;
+  color: var(--un-text-default);
+}
+
+.form-header p {
+  color: var(--un-text-muted);
+  margin: 0;
+}
+
+.form-section {
+  margin-bottom: 24px;
+}
+
+.form-field {
+  margin-bottom: 20px;
+}
+
+.form-field-group {
+  position: relative;
+}
+
+.helper-text {
+  font-size: var(--un-typography-caption-font-size);
+  color: var(--un-text-muted);
+  margin-top: 6px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px;
+  background-color: var(--un-background-01);
+  border-radius: var(--un-radius-small);
+}
+
+.helper-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e8f5e9;
+  border-radius: var(--un-radius-full);
+  font-size: 14px;
+}
+
+.char-counter {
+  font-size: var(--un-typography-caption-font-size);
+  color: var(--un-text-muted);
+  text-align: right;
+  margin-top: 4px;
+}
+
+.category-field-wrapper {
+  position: relative;
+}
+
+.category-mode-toggle {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.category-toggle-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1px solid var(--un-border-color-input);
+  background-color: var(--un-background-02);
+  color: var(--un-text-default);
+  border-radius: var(--un-radius-medium);
+  font-weight: var(--un-font-weight-primary-regular);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.category-toggle-btn:hover {
+  border-color: var(--un-primary-default);
+  background-color: rgba(123, 154, 126, 0.05);
+}
+
+.category-toggle-btn.active {
+  border-color: var(--un-primary-default);
+  background-color: var(--un-primary-default);
+  color: var(--un-text-inverse);
+  font-weight: var(--un-font-weight-primary-bold);
+}
+
+.category-input-container {
+  position: relative;
+}
+
+.back-to-dropdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--un-primary-default);
+  font-size: var(--un-typography-caption-font-size);
+  margin-top: 8px;
+  padding: 6px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: var(--un-font-weight-primary-regular);
+}
+
+.back-to-dropdown:hover {
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-top: 24px;
+  border-top: 1px solid var(--un-border-color-separator);
+  margin-top: 32px;
+}
+
+.icon-placeholder {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+</style>
+  {% include "_shared_styles.html" %}
+</head>
+<body>
+<div class="unity-theme" data-mode="light" data-density="balanced">
+  <div class="form-container">
+    <div class="form-header">
+      <h1>Add New Recipe</h1>
+      <p>Share your culinary creation with the community</p>
+    </div>
+
+    <form>
+      <div class="un-card">
+        <div class="form-section">
+          <div class="form-field">
+            <label for="recipe-name">Recipe Name <span style="color: var(--un-error-default);">*</span></label>
+            <input 
+              type="text" 
+              id="recipe-name" 
+              name="recipe-name" 
+              value="{{ recipe.name }}"
+              placeholder="Enter recipe name"
+              aria-required="true"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="description">Description</label>
+            <textarea 
+              id="description" 
+              name="description" 
+              rows="4" 
+              placeholder="Describe your recipe..."
+            >{{ recipe.description }}</textarea>
+            <div class="helper-text">
+              <span class="helper-icon">💡</span>
+              <span>Share what makes this recipe special, any tips for success, or its origin story.</span>
+            </div>
+            <div class="char-counter">{{ recipe.description|length }} / 500</div>
+          </div>
+
+          <div class="form-field">
+            <label for="category-custom">Category <span style="color: var(--un-error-default);">*</span></label>
+            <div class="category-field-wrapper">
+              <div class="category-mode-toggle">
+                <button type="button" class="category-toggle-btn" aria-pressed="false">
+                  📋 Choose from list
+                </button>
+                <button type="button" class="category-toggle-btn active" aria-pressed="true">
+                  ✏️ Enter custom
+                </button>
+              </div>
+              <div class="category-input-container">
+                <input 
+                  type="text" 
+                  id="category-custom" 
+                  name="category-custom" 
+                  value="{{ recipe.category }}"
+                  placeholder="Enter your custom category"
+                  aria-required="true"
+                  aria-describedby="category-custom-help"
+                />
+              </div>
+            </div>
+            <div class="helper-text" id="category-custom-help">
+              <span class="helper-icon">🏷️</span>
+              <span>Create a custom category name to organize your recipe in a unique way. Switch to "Choose from list" to select a predefined category instead.</span>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="prep-time">Prep Time (minutes)</label>
+            <input 
+              type="number" 
+              id="prep-time" 
+              name="prep-time" 
+              value="{{ recipe.prep_time }}"
+              placeholder="15"
+              min="0"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="cook-time">Cook Time (minutes)</label>
+            <input 
+              type="number" 
+              id="cook-time" 
+              name="cook-time" 
+              value="{{ recipe.cook_time }}"
+              placeholder="30"
+              min="0"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="servings">Servings</label>
+            <input 
+              type="number" 
+              id="servings" 
+              name="servings" 
+              value="{{ recipe.servings }}"
+              placeholder="4"
+              min="1"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="un-btn--secondary">Cancel</button>
+        <button type="button" class="un-btn--secondary">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 10L8 13L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Save as Draft
+        </button>
+        <button type="submit">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 10L8 13L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Save Recipe
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

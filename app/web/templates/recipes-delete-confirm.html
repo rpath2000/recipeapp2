@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delete Recipe Confirmation - Recipe Management</title>
+<style>
+:root {
+  --un-background-01: #faf9f7;
+  --un-background-02: #ffffff;
+  --un-background-inverse: #2c2c2c;
+  --un-text-default: #2c2c2c;
+  --un-text-muted: #757575;
+  --un-text-inverse: #ffffff;
+  --un-primary-default: #8b9d83;
+  --un-primary-hover: #748168;
+  --un-primary-pressed: #5d6a54;
+  --un-brand-500: #8b9d83;
+  --un-error-default: #d32f2f;
+  --un-error-hover: #b71c1c;
+  --un-error-pressed: #9a1919;
+  --un-success-default: #388e3c;
+  --un-warning-default: #f57c00;
+  --un-info-default: #1976d2;
+  --un-border-color-container: #e0e0e0;
+  --un-border-color-input: #bdbdbd;
+  --un-border-color-separator: #eeeeee;
+  --un-focus-color: #8b9d83;
+  --un-focus-width: 2px;
+  --un-focus-offset: 2px;
+  --un-font-family-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --un-font-family-mono: "SF Mono", Monaco, "Cascadia Code", "Courier New", monospace;
+  --un-font-weight-primary-regular: 400;
+  --un-font-weight-primary-bold: 600;
+  --un-font-weight-primary-light: 300;
+  --un-typography-title-h1-font-size: 2rem;
+  --un-typography-title-h2-font-size: 1.5rem;
+  --un-typography-title-h3-font-size: 1.25rem;
+  --un-typography-body-font-size: 1rem;
+  --un-typography-caption-font-size: 0.875rem;
+  --un-radius-none: 0;
+  --un-radius-small: 4px;
+  --un-radius-medium: 8px;
+  --un-radius-large: 12px;
+  --un-radius-xlarge: 16px;
+  --un-radius-full: 9999px;
+  --un-grid-space-gutter-default: 24px;
+  --un-space-card-body-horizontal: 20px;
+  --un-space-textinput-horizontal: 12px;
+}
+
+.unity-theme[data-mode="dark"] {
+  --un-background-01: #1a1a1a;
+  --un-background-02: #2c2c2c;
+  --un-text-default: #e0e0e0;
+  --un-text-muted: #9e9e9e;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--un-font-family-primary);
+  font-size: var(--un-typography-body-font-size);
+  color: var(--un-text-default);
+  background-color: var(--un-background-01);
+  line-height: 1.5;
+}
+
+button {
+  font-family: var(--un-font-family-primary);
+  font-size: var(--un-typography-body-font-size);
+  font-weight: var(--un-font-weight-primary-regular);
+  padding: 12px 24px;
+  border-radius: var(--un-radius-medium);
+  border: none;
+  background-color: var(--un-primary-default);
+  color: var(--un-text-inverse);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: var(--un-primary-hover);
+}
+
+button:active {
+  background-color: var(--un-primary-pressed);
+}
+
+button:focus {
+  outline: var(--un-focus-width) solid var(--un-focus-color);
+  outline-offset: var(--un-focus-offset);
+}
+
+button.un-btn--secondary {
+  background-color: transparent;
+  color: var(--un-text-default);
+  border: 1px solid var(--un-border-color-input);
+}
+
+button.un-btn--secondary:hover {
+  background-color: var(--un-background-02);
+  border-color: var(--un-text-muted);
+}
+
+.un-card {
+  background-color: var(--un-background-02);
+  border-radius: var(--un-radius-large);
+  padding: var(--un-space-card-body-horizontal);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--un-grid-space-gutter-default);
+}
+
+.modal-dialog {
+  background-color: var(--un-background-02);
+  border-radius: var(--un-radius-large);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  max-width: 500px;
+  width: 100%;
+}
+
+.modal-header {
+  padding: var(--un-grid-space-gutter-default);
+  border-bottom: 1px solid var(--un-border-color-separator);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--un-radius-full);
+  background-color: rgba(211, 47, 47, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--un-error-default);
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-size: var(--un-typography-title-h2-font-size);
+  font-weight: var(--un-font-weight-primary-bold);
+  color: var(--un-text-default);
+  margin: 0;
+}
+
+.modal-body {
+  padding: var(--un-grid-space-gutter-default);
+}
+
+.modal-body p {
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.modal-body p:last-child {
+  margin-bottom: 0;
+}
+
+.recipe-detail {
+  background-color: var(--un-background-01);
+  border-radius: var(--un-radius-medium);
+  padding: 16px;
+  margin-top: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.recipe-thumbnail {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--un-radius-medium);
+  object-fit: cover;
+  background-color: var(--un-background-02);
+  flex-shrink: 0;
+}
+
+.recipe-info {
+  flex: 1;
+}
+
+.recipe-name {
+  font-weight: var(--un-font-weight-primary-bold);
+  font-size: var(--un-typography-title-h3-font-size);
+  color: var(--un-text-default);
+  margin-bottom: 4px;
+}
+
+.recipe-meta {
+  font-size: var(--un-typography-caption-font-size);
+  color: var(--un-text-muted);
+  display: flex;
+  gap: 16px;
+}
+
+.warning-box {
+  background-color: rgba(245, 124, 0, 0.1);
+  border-left: 3px solid var(--un-warning-default);
+  padding: 12px 16px;
+  border-radius: var(--un-radius-small);
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.warning-box svg {
+  color: var(--un-warning-default);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.warning-text {
+  font-size: var(--un-typography-caption-font-size);
+  color: var(--un-text-default);
+  line-height: 1.5;
+}
+
+.modal-footer {
+  padding: var(--un-grid-space-gutter-default);
+  border-top: 1px solid var(--un-border-color-separator);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-delete {
+  background-color: var(--un-error-default);
+  color: var(--un-text-inverse);
+}
+
+.btn-delete:hover {
+  background-color: var(--un-error-hover);
+}
+
+.btn-delete:active {
+  background-color: var(--un-error-pressed);
+}
+
+.btn-delete:focus {
+  outline-color: var(--un-error-default);
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background-color: var(--un-background-02);
+  border-right: 1px solid var(--un-border-color-separator);
+  padding: var(--un-grid-space-gutter-default);
+}
+
+.sidebar nav ul {
+  list-style: none;
+}
+
+.sidebar nav li {
+  margin-bottom: 8px;
+}
+
+.sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--un-radius-medium);
+  color: var(--un-text-default);
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.sidebar nav a:hover {
+  background-color: var(--un-background-01);
+}
+
+.sidebar nav a.active {
+  background-color: rgba(139, 157, 131, 0.15);
+  color: var(--un-primary-default);
+  font-weight: var(--un-font-weight-primary-bold);
+}
+
+.main-content {
+  flex: 1;
+  padding: var(--un-grid-space-gutter-default);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--un-grid-space-gutter-default);
+}
+
+.page-header h1 {
+  font-size: var(--un-typography-title-h1-font-size);
+  font-weight: var(--un-font-weight-primary-bold);
+  color: var(--un-text-default);
+}
+
+.toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: var(--un-grid-space-gutter-default);
+}
+
+.search-box {
+  flex: 1;
+  max-width: 400px;
+  padding: var(--un-space-textinput-horizontal);
+  border: 1px solid var(--un-border-color-input);
+  border-radius: var(--un-radius-medium);
+  font-family: var(--un-font-family-primary);
+  font-size: var(--un-typography-body-font-size);
+  background-color: var(--un-background-02);
+}
+
+.search-box:focus {
+  outline: var(--un-focus-width) solid var(--un-focus-color);
+  outline-offset: var(--un-focus-offset);
+  border-color: var(--un-primary-default);
+}
+
+select {
+  padding: var(--un-space-textinput-horizontal);
+  border: 1px solid var(--un-border-color-input);
+  border-radius: var(--un-radius-medium);
+  font-family: var(--un-font-family-primary);
+  font-size: var(--un-typography-body-font-size);
+  background-color: var(--un-background-02);
+  color: var(--un-text-default);
+  cursor: pointer;
+}
+
+select:focus {
+  outline: var(--un-focus-width) solid var(--un-focus-color);
+  outline-offset: var(--un-focus-offset);
+  border-color: var(--un-primary-default);
+}
+
+.recipes-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: var(--un-background-02);
+  border-radius: var(--un-radius-large);
+  overflow: hidden;
+}
+
+.recipes-table thead {
+  background-color: var(--un-background-01);
+}
+
+.recipes-table th {
+  text-align: left;
+  padding: 16px;
+  font-weight: var(--un-font-weight-primary-bold);
+  color: var(--un-text-default);
+  font-size: var(--un-typography-caption-font-size);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--un-border-color-separator);
+}
+
+.recipes-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--un-border-color-separator);
+  vertical-align: middle;
+}
+
+.recipes-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.recipes-table tbody tr:hover {
+  background-color: var(--un-background-01);
+}
+
+.recipe-table-thumbnail {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--un-radius-medium);
+  object-fit: cover;
+  background-color: var(--un-background-01);
+}
+
+.recipe-title {
+  font-weight: var(--un-font-weight-primary-bold);
+  color: var(--un-text-default);
+  margin-bottom: 4px;
+}
+
+.recipe-description {
+  font-size: var(--un-typography-caption-font-size);
+  color: var(--un-text-muted);
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--un-radius-full);
+  font-size: var(--un-typography-caption-font-size);
+  font-weight: var(--un-font-weight-primary-regular);
+}
+
+.category-badge.dessert {
+  background-color: #fff9e6;
+  color: #8b6914;
+}
+
+.category-badge.main {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.category-badge.appetizer {
+  background-color: #f3e5f5;
+  color: #6a1b9a;
+}
+
+.category-badge.breakfast {
+  background-color: #fce4ec;
+  color: #c2185b;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: var(--un-radius-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: var(--un-text-muted);
+  border: 1px solid var(--un-border-color-container);
+}
+
+.icon-btn:hover {
+  background-color: var(--un-background-01);
+  color: var(--un-text-default);
+  border-color: var(--un-text-muted);
+}
+
+.icon-btn.delete-btn {
+  color: var(--un-error-default);
+  border-color: var(--un-error-default);
+}
+
+.icon-btn.delete-btn:hover {
+  background-color: rgba(211, 47, 47, 0.1);
+  border-color: var(--un-error-hover);
+}
+
+.owner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background-color: rgba(139, 157, 131, 0.15);
+  color: var(--un-primary-default);
+  border-radius: var(--un-radius-full);
+  font-size: var(--un-typography-caption-font-size);
+  font-weight: var(--un-font-weight-primary-bold);
+}
+</style>
+  {% include "_shared_styles.html" %}
+</head>
+<body>
+<div class="unity-theme" data-mode="light" data-density="balanced">
+  <div class="app-layout">
+    <aside class="sidebar">
+      <nav aria-label="Main navigation">
+        <ul>
+          <li>
+            <a href="#" class="active">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+              </svg>
+              <span>My Recipes</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="16"/>
+                <line x1="8" y1="12" x2="16" y2="12"/>
+              </svg>
+              <span>New Recipe</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span>Profile</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <header class="page-header">
+        <h1>My Recipes</h1>
+        <div class="owner-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>Sarah Chen</span>
+        </div>
+      </header>
+      
+      <div class="toolbar">
+        <input type="search" class="search-box" placeholder="Search recipes..." aria-label="Search recipes">
+        <select aria-label="Filter by category">
+          <option value="">All Categories</option>
+          <option value="dessert">Dessert</option>
+          <option value="main">Main Course</option>
+          <option value="appetizer">Appetizer</option>
+          <option value="breakfast">Breakfast</option>
+        </select>
+        <button>New Recipe</button>
+      </div>
+      
+      <table class="recipes-table">
+        <thead>
+          <tr>
+            <th style="width: 80px;">Image</th>
+            <th>Recipe</th>
+            <th style="width: 150px;">Category</th>
+            <th style="width: 100px;">Servings</th>
+            <th style="width: 180px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <img src="data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='60' height='60' fill='%23e0d5c7'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='%23757575'%3E🍰%3C/text%3E%3C/svg%3E" alt="Chocolate Layer Cake" class="recipe-table-thumbnail">
+            </td>
+            <td>
+              <div class="recipe-title">Chocolate Layer Cake</div>
+              <div class="recipe-description">Rich, moist chocolate cake with silky buttercream frosting</div>
+            </td>
+            <td>
+              <span class="category-badge dessert">Dessert</span>
+            </td>
+            <td>12</td>
+            <td>
+              <div class="action-buttons">
+                <button class="icon-btn" aria-label="View Chocolate Layer Cake">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </button>
+                <button class="icon-btn" aria-label="Edit Chocolate Layer Cake">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                  </svg>
+                </button>
+                <button class="icon-btn delete-btn" aria-label="Delete Chocolate Layer Cake">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    <line x1="10" y1="11" x2="10" y2="17"/>
+                    <line x1="14" y1="11" x2="14" y2="17"/>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+  </div>
+  
+  <div class="modal-overlay" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <h2 id="modal-title" class="modal-title">Delete Recipe?</h2>
+      </div>
+      
+      <div class="modal-body">
+        <p>Are you sure you want to permanently delete this recipe? This action cannot be undone.</p>
+        
+        <div class="recipe-detail">
+          <img src="data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='80' height='80' fill='%23e0d5c7'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='32' fill='%23757575'%3E🍰%3C/text%3E%3C/svg%3E" alt="Chocolate Layer Cake" class="recipe-thumbnail">
+          <div class="recipe-info">
+            <div class="recipe-name">Chocolate Layer Cake</div>
+            <div class="recipe-meta">
+              <span>Dessert</span>
+              <span>•</span>
+              <span>12 servings</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="warning-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <div class="warning-text">
+            <strong>Warning:</strong> Deleting this recipe will remove all associated data including ingredients, instructions, and images. Other users who have saved or favorited this recipe will no longer have access to it.
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="un-btn--secondary" aria-label="Cancel deletion">Cancel</button>
+        <button class="btn-delete" aria-label="Confirm deletion of Chocolate Layer Cake">Delete Recipe</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

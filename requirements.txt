@@ -1,0 +1,10 @@
+# Pinned stack: python/fastapi
+fastapi
+uvicorn[standard]
+pydantic
+sqlalchemy
+psycopg2-binary
+alembic
+httpx
+jinja2
+python-multipart
