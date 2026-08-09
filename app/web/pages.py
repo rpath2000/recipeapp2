@@ -19,7 +19,7 @@ from sqlalchemy.orm import Session
 from app.contracts import RecipeCreateIn, RecipeUpdateIn
 from app.models.database import get_db
 from app.services.recipe_service import RecipeService
-from app.security.sso_middleware import get_current_user
+from app.security.authz import get_current_user
 
 logger = logging.getLogger(__name__)
 

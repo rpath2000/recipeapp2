@@ -14,7 +14,7 @@ from sqlalchemy.orm import Session
 
 from app.contracts import RecipeCreateIn, RecipeListOut, RecipeOut, RecipeUpdateIn
 from app.models.database import get_db
-from app.security.sso_middleware import get_current_user, verify_ownership
+from app.security.authz import get_current_user, verify_ownership
 from app.services.recipe_service import RecipeService
 
 logger = logging.getLogger(__name__)
