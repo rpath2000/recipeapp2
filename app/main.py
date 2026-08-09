@@ -26,7 +26,11 @@ _SEAMS = [
     'services.recipe_service:RecipeService',
     'services.image_service:ImageService',
     'routers.recipes:router',
-    'routers.frontend:router',
+    # routers.frontend:router is deliberately NOT wired. It is an SPA router whose
+    # catch-all GET /{full_path:path} shadows every other route and serves
+    # app/web/static/index.html, which this app does not have: the pinned stack is
+    # server-rendered (jinja2+htmx) and web.pages:router below owns the pages.
+    # With it wired, /health, /login and /recipes all returned 404.
     'integrations.s3_client:S3Client',
     'integrations.db_health:check_db_health',
     'security.sso_middleware:SSOMiddleware',
