@@ -120,6 +120,9 @@ def _to_dto(recipe: Recipe) -> RecipeDTO:
     )
 
 
+_MAX_STORABLE_ID = 2**63 - 1
+
+
 def _parse_recipe_id(recipe_id: object) -> int:
     """Parse and validate a recipe identifier.
 
@@ -158,6 +161,15 @@ def _parse_recipe_id(recipe_id: object) -> int:
 
     if parsed <= 0:
         raise RecipeNotFoundError(f"Malformed recipe id: {recipe_id!r}")
+
+    # An id no column can hold is as absent as one that simply is not there, and it must be
+    # refused HERE. Passed through, it reaches the driver, which raises its own out-of-range
+    # error -- OverflowError on SQLite, a numeric-range error on PostgreSQL -- and neither is
+    # a RecipeNotFoundError, so the page returns a 500 instead of the graceful not-found the
+    # requirements ask for. The bound is the largest signed 64-bit integer, which is what both
+    # engines store.
+    if parsed > _MAX_STORABLE_ID:
+        raise RecipeNotFoundError(f"Recipe id out of range: {recipe_id!r}")
 
     return parsed
 

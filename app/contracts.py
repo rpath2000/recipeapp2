@@ -30,7 +30,19 @@ class RecipeNotFoundError(Exception):
     """A recipe with the given id does not exist or the id is malformed"""
 
 class ValidationError(Exception):
-    """One or more recipe fields fail validation (empty, too long, or otherwise invalid)"""
+    """One or more recipe fields fail validation (empty, too long, or otherwise invalid).
+
+    `errors` maps FIELD NAME -> message, so a caller can attribute a failure to the field that
+    caused it and render the message beside that input. Declaring this as a bare Exception dropped
+    that mapping: the service already built the dict and raised it, and the web layer had to
+    recover the field by substring-matching `str(exc)` -- the repr of the very dict it should have
+    been handed. A message-only raise carries no field attribution, so `errors` is empty and the
+    text stays available through `str(exc)`.
+    """
+
+    def __init__(self, errors, *args):
+        super().__init__(errors, *args)
+        self.errors = dict(errors) if isinstance(errors, dict) else {}
 
 class RecipeProtocol(Protocol):
     def __init__(self) -> None: ...  # declared to take no arguments
