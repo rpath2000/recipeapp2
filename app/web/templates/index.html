@@ -27,6 +27,10 @@
   --un-space-card-body-horizontal: 1.5rem;
   --un-info-default: #0066cc;
   --un-info-background: #e6f2ff;
+  --un-success-default: #2e7d32;
+  --un-success-background: #e6f4ea;
+  --un-error-default: #d32f2f;
+  --un-error-background: #fdecea;
 }
 
 .unity-theme {
@@ -144,6 +148,32 @@ tbody tr:hover {
   border-radius: var(--un-radius-medium);
 }
 
+.alert-success {
+  background-color: var(--un-success-background);
+  color: var(--un-text-default);
+  border-left: 4px solid var(--un-success-default);
+  padding: 1rem var(--un-space-card-body-horizontal);
+  margin-bottom: 1.5rem;
+  border-radius: var(--un-radius-medium);
+}
+
+.alert-error {
+  background-color: var(--un-error-background);
+  color: var(--un-text-default);
+  border-left: 4px solid var(--un-error-default);
+  padding: 1rem var(--un-space-card-body-horizontal);
+  margin-bottom: 1.5rem;
+  border-radius: var(--un-radius-medium);
+}
+
+.field-error {
+  display: block;
+  color: var(--un-error-default);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  font-weight: var(--un-font-weight-primary-bold);
+}
+
 .empty-state {
   text-align: center;
   padding: 3rem 1rem;
@@ -160,13 +190,28 @@ tbody tr:hover {
   </header>
 
   <main>
-    <!-- FRS-017: Error message display when recipe not found -->
-    <!-- Example: Recipe not found: 999999 -->
-    <!-- Uncomment below to show error state:
-    <div class="alert-info" role="alert">
-      Recipe not found: 999999
+    <!-- URS-014 / FRS-014: success message, announced to assistive tech -->
+    {% if success_message %}
+    <div class="alert-success" role="status" aria-live="polite">
+      {{ success_message }}
     </div>
-    -->
+    {% endif %}
+
+    <!-- URS-014 / FRS-014, FRS-017: error message, announced to assistive tech -->
+    {% if error_message %}
+    <div class="alert-error" role="alert" aria-live="polite">
+      {{ error_message }}
+    </div>
+    {% endif %}
+
+    <!-- URS-013 / FRS-013: field-specific errors, linked to inputs via aria-describedby -->
+    {% if field_errors %}
+    <div id="field-errors" aria-live="polite">
+      {% for field_name, field_message in field_errors.items() %}
+      <span id="{{ field_name }}-error" class="field-error" role="alert">{{ field_message }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
 
     <!-- FRS-008: HTML table with thead, tbody, th elements for accessibility -->
     <!-- FRS-009: Recipes ordered by updated_at DESC, id DESC -->
@@ -179,7 +224,7 @@ tbody tr:hover {
         </tr>
       </thead>
       <tbody>{% for item in recipes %}<tr>
-          <td><a href="/recipe/105">{{ item.id }}</a></td>
+          <td><a href="/recipe/{{ item.id }}">{{ item.id }}</a></td>
           <td>{{ item.name }}</td>
           <td>{{ item.ingredients }}</td>
         </tr>{% endfor %}</tbody>
