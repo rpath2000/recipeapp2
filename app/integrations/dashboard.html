@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Recipe App{% endblock %}
+
+{% block content %}
+<h1>Recipe Dashboard</h1>
+
+{% if recipes %}
+<div class="table-wrapper">
+    <table>
+        <caption>List of saved recipes</caption>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Ingredients</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Updated At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for recipe in recipes %}
+            <tr>
+                <td>{{ recipe.id }}</td>
+                <td>{{ recipe.name }}</td>
+                <td>{{ recipe.ingredients }}</td>
+                <td>{{ recipe.created_at }}</td>
+                <td>{{ recipe.updated_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p>No recipes have been saved yet.</p>
+{% endif %}
+{% endblock %}
