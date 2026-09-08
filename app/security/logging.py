@@ -23,7 +23,10 @@ Design notes
   logged. Recipe content is user-supplied but non-sensitive; even so, we
   truncate long values defensively before logging them.
 - `setup_logging()` is idempotent: calling it multiple times (e.g. once from
-  the entrypoint and once from a test) will not duplicate log handlers.
+  the entrypoint and once from a test) will not duplicate log handlers, and
+  will reset the level of the loggers this module owns so that test/process
+  ordering cannot leave them in a state where subsequent calls to the
+  logging helpers are silently dropped.
 """
 
 from __future__ import annotations
@@ -124,6 +127,21 @@ def setup_logging() -> None:
 
     root_logger.addHandler(handler)
     root_logger.setLevel(logging.INFO)
+
+    # Explicitly reset the level/propagation of the loggers this module
+    # owns. Without this, a prior caller (e.g. a test, or a previous
+    # request handler) that adjusted the level of these specific logger
+    # objects (which are process-wide singletons) could leave them in a
+    # state where subsequent calls to log_validation_failure /
+    # log_unhandled_exception / log_request are silently dropped, even
+    # though the root logger itself is correctly configured. Resetting to
+    # NOTSET restores the intended behaviour of deferring to the root
+    # logger's effective level (INFO), and ensures propagation is enabled
+    # so records always reach the handler installed above.
+    for logger_name in (SECURITY_LOGGER_NAME, ACCESS_LOGGER_NAME):
+        owned_logger = logging.getLogger(logger_name)
+        owned_logger.setLevel(logging.NOTSET)
+        owned_logger.propagate = True
 
     # Document SEC-001 loudly at startup so operators see it in the logs.
     security_logger = logging.getLogger(SECURITY_LOGGER_NAME)
