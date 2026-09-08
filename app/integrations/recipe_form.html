@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Recipe - Recipe App{% endblock %}
+
+{% block content %}
+<h1>{% if recipe %}Edit Recipe{% else %}New Recipe{% endif %}</h1>
+
+{% if confirmation %}
+<div class="confirmation" role="status" aria-live="polite">
+    {{ confirmation }}
+</div>
+{% endif %}
+
+<form method="post" action="/recipe" novalidate>
+    <div class="form-field">
+        <label for="name">Recipe name</label>
+        <input
+            type="text"
+            id="name"
+            name="name"
+            value="{{ recipe.name if recipe else '' }}"
+            {% if errors and errors.name %}aria-describedby="name-error" aria-invalid="true"{% endif %}
+            required
+        >
+        {% if errors and errors.name %}
+        <p id="name-error" class="field-error" role="alert">{{ errors.name }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-field">
+        <label for="ingredients">Ingredients</label>
+        <textarea
+            id="ingredients"
+            name="ingredients"
+            rows="6"
+            {% if errors and errors.ingredients %}aria-describedby="ingredients-error" aria-invalid="true"{% endif %}
+            required
+        >{{ recipe.ingredients if recipe else '' }}</textarea>
+        {% if errors and errors.ingredients %}
+        <p id="ingredients-error" class="field-error" role="alert">{{ errors.ingredients }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-actions">
+        <button type="submit">Save Recipe</button>
+    </div>
+</form>
+{% endblock %}
