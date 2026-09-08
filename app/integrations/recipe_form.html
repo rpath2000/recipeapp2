@@ -13,11 +13,11 @@
 
 <form method="post" action="/recipe" novalidate>
     <div class="form-field">
-        <label for="name">Recipe name</label>
+        <label for="recipe-name">Recipe name</label>
         <input
             type="text"
-            id="name"
-            name="name"
+            id="recipe-name"
+            name="recipe-name"
             value="{{ recipe.name if recipe else '' }}"
             {% if errors and errors.name %}aria-describedby="name-error" aria-invalid="true"{% endif %}
             required
@@ -28,10 +28,10 @@
     </div>
 
     <div class="form-field">
-        <label for="ingredients">Ingredients</label>
+        <label for="recipe-ingredients">Ingredients</label>
         <textarea
-            id="ingredients"
-            name="ingredients"
+            id="recipe-ingredients"
+            name="recipe-ingredients"
             rows="6"
             {% if errors and errors.ingredients %}aria-describedby="ingredients-error" aria-invalid="true"{% endif %}
             required
