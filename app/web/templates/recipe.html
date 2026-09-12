@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Form - AbbVie Recipe Management</title>
+  <style>
+    /* AbbVie Unity Design System - Embedded Base Styles */
+    :root {
+      /* Color tokens - light mode */
+      --un-background-01: #ffffff;
+      --un-background-02: #f5f5f5;
+      --un-background-inverse: #1a1a1a;
+      --un-text-default: #1a1a1a;
+      --un-text-muted: #6e6e6e;
+      --un-text-inverse: #ffffff;
+      --un-primary-default: #0066cc;
+      --un-primary-hover: #0052a3;
+      --un-primary-pressed: #003d7a;
+      --un-brand-500: #0066cc;
+      --un-brand-600: #0052a3;
+      --un-brand-700: #003d7a;
+      --un-brand-800: #002952;
+      --un-brand-900: #001529;
+      --un-error-default: #d32f2f;
+      --un-success-default: #2e7d32;
+      --un-warning-default: #ed6c02;
+      --un-info-default: #0288d1;
+      --un-border-color-container: #e0e0e0;
+      --un-border-color-input: #bdbdbd;
+      --un-border-color-separator: #e0e0e0;
+      --un-focus-color: #0066cc;
+      --un-focus-width: 2px;
+      --un-focus-offset: 2px;
+
+      /* Typography tokens */
+      --un-font-family-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --un-font-family-mono: 'Courier New', Courier, monospace;
+      --un-font-weight-primary-regular: 400;
+      --un-font-weight-primary-bold: 700;
+      --un-font-weight-primary-light: 300;
+      --un-typography-title-h1-font-size: 2.5rem;
+      --un-typography-title-h2-font-size: 2rem;
+      --un-typography-title-h3-font-size: 1.75rem;
+      --un-typography-body-font-size: 1rem;
+      --un-typography-body-line-height: 1.5;
+      --un-typography-caption-font-size: 0.875rem;
+
+      /* Radius tokens */
+      --un-radius-none: 0;
+      --un-radius-small: 4px;
+      --un-radius-medium: 8px;
+      --un-radius-large: 12px;
+      --un-radius-xlarge: 16px;
+      --un-radius-full: 9999px;
+
+      /* Spacing tokens */
+      --un-grid-space-gutter-default: 16px;
+      --un-space-card-body-horizontal: 24px;
+      --un-space-textinput-horizontal: 12px;
+    }
+
+    [data-mode="dark"] {
+      --un-background-01: #1a1a1a;
+      --un-background-02: #2a2a2a;
+      --un-background-inverse: #ffffff;
+      --un-text-default: #ffffff;
+      --un-text-muted: #b0b0b0;
+      --un-text-inverse: #1a1a1a;
+      --un-border-color-container: #404040;
+      --un-border-color-input: #606060;
+      --un-border-color-separator: #404040;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--un-font-family-primary);
+      font-size: var(--un-typography-body-font-size);
+      line-height: var(--un-typography-body-line-height);
+      color: var(--un-text-default);
+      background-color: var(--un-background-01);
+    }
+
+    .unity-theme {
+      min-height: 100vh;
+      padding: calc(var(--un-grid-space-gutter-default) * 2);
+    }
+
+    h1 {
+      font-size: var(--un-typography-title-h2-font-size);
+      font-weight: var(--un-font-weight-primary-bold);
+      color: var(--un-text-default);
+      margin-bottom: calc(var(--un-grid-space-gutter-default) * 1.5);
+    }
+
+    label {
+      display: block;
+      font-weight: var(--un-font-weight-primary-bold);
+      color: var(--un-text-default);
+      margin-bottom: calc(var(--un-grid-space-gutter-default) * 0.5);
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: var(--un-space-textinput-horizontal);
+      font-family: var(--un-font-family-primary);
+      font-size: var(--un-typography-body-font-size);
+      color: var(--un-text-default);
+      background-color: var(--un-background-01);
+      border: 1px solid var(--un-border-color-input);
+      border-radius: var(--un-radius-small);
+      transition: border-color 0.2s ease;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--un-focus-color);
+      box-shadow: 0 0 0 var(--un-focus-width) var(--un-focus-color);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 200px;
+    }
+
+    button {
+      padding: calc(var(--un-grid-space-gutter-default) * 0.75) calc(var(--un-grid-space-gutter-default) * 1.5);
+      font-family: var(--un-font-family-primary);
+      font-size: var(--un-typography-body-font-size);
+      font-weight: var(--un-font-weight-primary-bold);
+      color: var(--un-text-inverse);
+      background-color: var(--un-primary-default);
+      border: none;
+      border-radius: var(--un-radius-small);
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: var(--un-primary-hover);
+    }
+
+    button:active {
+      background-color: var(--un-primary-pressed);
+    }
+
+    button:focus {
+      outline: var(--un-focus-width) solid var(--un-focus-color);
+      outline-offset: var(--un-focus-offset);
+    }
+
+    button.un-btn--secondary {
+      background-color: transparent;
+      color: var(--un-primary-default);
+      border: 1px solid var(--un-primary-default);
+    }
+
+    button.un-btn--secondary:hover {
+      background-color: var(--un-background-02);
+    }
+
+    a {
+      color: var(--un-primary-default);
+      text-decoration: none;
+      font-weight: var(--un-font-weight-primary-bold);
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--un-primary-hover);
+      text-decoration: underline;
+    }
+
+    a:focus {
+      outline: var(--un-focus-width) solid var(--un-focus-color);
+      outline-offset: var(--un-focus-offset);
+      border-radius: var(--un-radius-small);
+    }
+
+    .un-card {
+      background-color: var(--un-background-01);
+      border: 1px solid var(--un-border-color-container);
+      border-radius: var(--un-radius-medium);
+      padding: var(--un-space-card-body-horizontal);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Custom styles for this page */
+    .recipe-form-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: calc(var(--un-grid-space-gutter-default) * 1.5);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: var(--un-grid-space-gutter-default);
+      margin-top: calc(var(--un-grid-space-gutter-default) * 2);
+    }
+
+    .error-message {
+      display: block;
+      color: var(--un-error-default);
+      font-size: var(--un-typography-caption-font-size);
+      margin-top: calc(var(--un-grid-space-gutter-default) * 0.5);
+    }
+
+    .success-message {
+      background-color: var(--un-success-default);
+      color: var(--un-text-inverse);
+      padding: var(--un-grid-space-gutter-default);
+      border-radius: var(--un-radius-small);
+      margin-bottom: calc(var(--un-grid-space-gutter-default) * 1.5);
+      font-weight: var(--un-font-weight-primary-bold);
+    }
+
+    .field-hint {
+      display: block;
+      color: var(--un-text-muted);
+      font-size: var(--un-typography-caption-font-size);
+      margin-top: calc(var(--un-grid-space-gutter-default) * 0.5);
+    }
+
+    .has-error input,
+    .has-error textarea {
+      border-color: var(--un-error-default);
+    }
+
+    .nav-link {
+      display: inline-block;
+      margin-bottom: calc(var(--un-grid-space-gutter-default) * 1.5);
+    }
+  </style>
+  {% include "_shared_styles.html" %}
+</head>
+<body>
+  <div class="unity-theme" data-mode="light" data-density="balanced">
+    <main class="recipe-form-container">
+      <nav>
+        <a href="/" class="nav-link">← Back to Dashboard</a>
+      </nav>
+
+      <section class="un-card">
+        <h1>Recipe Form</h1>
+
+        {% if success_message %}
+        <div class="success-message" role="alert">{{ success_message }}</div>
+        {% endif %}
+
+        <form method="post" action="/recipe">
+          <!-- Recipe name field (FRS-001, FRS-002, FRS-004, US-001, US-002) -->
+          <div class="form-group">
+            <label for="recipe-name">Recipe Name</label>
+            <input 
+              type="text" 
+              id="recipe-name" 
+              name="name" 
+              maxlength="120"
+              required
+              aria-describedby="name-hint name-error"
+              value=""
+            >
+            <span id="name-hint" class="field-hint">Maximum 120 characters</span>
+            <!-- Error message state (FRS-006, US-004) -->
+            <!-- <span id="name-error" class="error-message" role="alert">
+              Recipe name must contain at least one non-whitespace character and not exceed 120 characters.
+            </span> -->
+          </div>
+
+          <!-- Ingredients field (FRS-001, FRS-003, FRS-005, US-001, US-003) -->
+          <div class="form-group">
+            <label for="ingredients">Ingredients</label>
+            <textarea 
+              id="ingredients" 
+              name="ingredients" 
+              maxlength="4000"
+              required
+              aria-describedby="ingredients-hint ingredients-error"
+            >{{ ingredients }}</textarea>
+            <span id="ingredients-hint" class="field-hint">Maximum 4000 characters. Supports Unicode characters including emoji and non-Latin scripts.</span>
+            <!-- Error message state (FRS-006, US-005) -->
+            <!-- <span id="ingredients-error" class="error-message" role="alert">
+              Ingredients must contain at least one non-whitespace character and not exceed 4000 characters.
+            </span> -->
+          </div>
+
+          <!-- Form actions (FRS-001) -->
+          <div class="form-actions">
+            <button type="submit">Save Recipe</button>
+            <a href="/">
+              <button type="button" class="un-btn--secondary">Cancel</button>
+            </a>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
