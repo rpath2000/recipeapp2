@@ -240,6 +240,13 @@
       display: inline-block;
       margin-bottom: calc(var(--un-grid-space-gutter-default) * 1.5);
     }
+
+    .recipe-id-indicator {
+      display: block;
+      color: var(--un-text-muted);
+      font-size: var(--un-typography-caption-font-size);
+      margin-bottom: calc(var(--un-grid-space-gutter-default) * 1);
+    }
   </style>
   {% include "_shared_styles.html" %}
 </head>
@@ -257,7 +264,12 @@
         <div class="success-message" role="alert">{{ success_message }}</div>
         {% endif %}
 
+        {% if recipe_id %}
+        <span class="recipe-id-indicator">Editing recipe: {{ recipe_id }}</span>
+        {% endif %}
+
         <form method="post" action="/recipe">
+          <input type="hidden" name="id" value="{{ recipe_id }}">
           <!-- Recipe name field (FRS-001, FRS-002, FRS-004, US-001, US-002) -->
           <div class="form-group">
             <label for="recipe-name">Recipe Name</label>
@@ -268,13 +280,15 @@
               maxlength="120"
               required
               aria-describedby="name-hint name-error"
-              value=""
+              value="{{ name }}"
             >
             <span id="name-hint" class="field-hint">Maximum 120 characters</span>
             <!-- Error message state (FRS-006, US-004) -->
-            <!-- <span id="name-error" class="error-message" role="alert">
-              Recipe name must contain at least one non-whitespace character and not exceed 120 characters.
-            </span> -->
+            {% if field_errors.name %}
+            <span id="name-error" class="error-message" role="alert">
+              {{ field_errors.name }}
+            </span>
+            {% endif %}
           </div>
 
           <!-- Ingredients field (FRS-001, FRS-003, FRS-005, US-001, US-003) -->
@@ -289,10 +303,16 @@
             >{{ ingredients }}</textarea>
             <span id="ingredients-hint" class="field-hint">Maximum 4000 characters. Supports Unicode characters including emoji and non-Latin scripts.</span>
             <!-- Error message state (FRS-006, US-005) -->
-            <!-- <span id="ingredients-error" class="error-message" role="alert">
-              Ingredients must contain at least one non-whitespace character and not exceed 4000 characters.
-            </span> -->
+            {% if field_errors.ingredients %}
+            <span id="ingredients-error" class="error-message" role="alert">
+              {{ field_errors.ingredients }}
+            </span>
+            {% endif %}
           </div>
+
+          {% if error_message %}
+          <div class="error-message" role="alert">{{ error_message }}</div>
+          {% endif %}
 
           <!-- Form actions (FRS-001) -->
           <div class="form-actions">
