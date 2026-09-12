@@ -253,10 +253,9 @@
       <section class="un-card">
         <h1>Recipe Form</h1>
 
-        <!-- Success message state (FRS-007, FRS-008) -->
-        <!-- <div class="success-message" role="alert">
-          Recipe saved successfully.
-        </div> -->
+        {% if success_message %}
+        <div class="success-message" role="alert">{{ success_message }}</div>
+        {% endif %}
 
         <form method="post" action="/recipe">
           <!-- Recipe name field (FRS-001, FRS-002, FRS-004, US-001, US-002) -->

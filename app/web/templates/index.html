@@ -208,6 +208,15 @@ a:focus-visible {
   margin: 0 0 16px 0;
   font-size: var(--un-typography-body-font-size);
 }
+
+.success-message {
+  background-color: var(--un-success-default);
+  color: var(--un-text-inverse);
+  padding: var(--un-grid-space-gutter-default);
+  border-radius: var(--un-radius-small);
+  margin-bottom: var(--un-grid-space-gutter-default);
+  font-weight: var(--un-font-weight-primary-bold);
+}
 </style>
   {% include "_shared_styles.html" %}
 </head>
@@ -218,7 +227,11 @@ a:focus-visible {
       <h1>Recipe Dashboard</h1>
       <a href="/recipe" role="button" style="background-color: var(--un-primary-default); color: var(--un-text-inverse); padding: 12px 24px; border-radius: var(--un-radius-small); font-weight: var(--un-font-weight-primary-bold); display: inline-block;">Create New Recipe</a>
     </header>
-    
+
+    {% if success_message %}
+    <div class="success-message" role="alert">{{ success_message }}</div>
+    {% endif %}
+
     <main>
       <table role="table" aria-label="Recipe list">
         <thead>
