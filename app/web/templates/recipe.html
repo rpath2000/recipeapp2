@@ -58,7 +58,6 @@
       --un-background-inverse: #ffffff;
       --un-text-default: #ffffff;
       --un-text-muted: #b3b3b3;
-      --un-text-inverse: #1a1a1a;
       --un-border-color-container: #404040;
       --un-border-color-input: #525252;
       --un-border-color-separator: #404040;
@@ -245,24 +244,34 @@
       </header>
 
       <main>
-        <!-- Success message - shown after successful create/update -->
-        <!-- <div class="alert alert--success" role="alert">
-          Recipe created successfully
-        </div> -->
+        {% if success_message %}
+        <div class="alert alert--success" role="alert">
+          {{ success_message }}
+        </div>
+        {% endif %}
 
-        <!-- Error messages - shown when validation fails (FRS-005) -->
-        <!-- <div class="alert alert--error" role="alert">
+        {% if error_message %}
+        <div class="alert alert--error" role="alert">
+          {{ error_message }}
+        </div>
+        {% endif %}
+
+        {% if field_errors %}
+        <div class="alert alert--error" role="alert">
           <strong>Please correct the following errors:</strong>
           <ul>
-            <li>Recipe name is required</li>
-            <li>Ingredients are required</li>
+            {% for field, message in field_errors.items() %}
+            <li>{{ message }}</li>
+            {% endfor %}
           </ul>
-        </div> -->
+        </div>
+        {% endif %}
 
         <section class="un-card">
           <form method="post" action="/recipe">
-            <!-- Hidden field for recipe ID when editing existing recipe (FRS-007, FRS-015) -->
-            <!-- <input type="hidden" name="recipe_id" value="123"> -->
+            {% if recipe_id %}
+            <input type="hidden" name="id" value="{{ recipe_id }}">
+            {% endif %}
 
             <div class="form-group">
               <label for="recipe-name">Recipe Name <span style="color: var(--un-error-default);">*</span></label>
@@ -274,7 +283,7 @@
                 required
                 aria-required="true"
                 aria-describedby="name-help"
-                value=""
+                value="{{ recipe_name }}"
               >
               <div id="name-help" class="char-count">Maximum 120 characters</div>
             </div>

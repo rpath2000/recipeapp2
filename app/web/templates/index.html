@@ -19,6 +19,8 @@
       --un-brand-500: #0066cc;
       --un-border-color-container: #dee2e6;
       --un-border-color-separator: #e9ecef;
+      --un-success-default: #2e7d32;
+      --un-error-default: #d32f2f;
       --un-focus-color: #0066cc;
       --un-focus-width: 2px;
       --un-focus-offset: 2px;
@@ -96,6 +98,19 @@
       margin-bottom: var(--un-grid-space-gutter-default);
     }
 
+    .alert {
+      padding: 1rem var(--un-space-card-body-horizontal);
+      border-radius: var(--un-radius-small);
+      margin-bottom: var(--un-grid-space-gutter-default);
+      font-weight: var(--un-font-weight-primary-bold);
+    }
+
+    .alert--success {
+      background-color: #e8f5e9;
+      color: var(--un-success-default);
+      border: 1px solid var(--un-success-default);
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -152,6 +167,12 @@
     </header>
 
     <main>
+      {% if success_message %}
+      <div class="alert alert--success" role="alert">
+        {{ success_message }}
+      </div>
+      {% endif %}
+
       <section class="un-card">
         <table>
           <thead>
